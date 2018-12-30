@@ -13,6 +13,10 @@
     "vuepress": "^0.14.8"
   },
   "dependencies": {
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "markdown-it": "^8.4.1",
+    "markdown-it-emoji": "^1.4.0",
+    "markdown-it-katex": "^2.0.3",
+    "vue-analytics": "^5.12.2"
   }
 }

@@ -26,12 +26,5 @@ module.exports = {
           "https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.css"
       }
     ]
-  ]
-  // configureWebpack: {
-  //     resolve: {
-  //       alias: {
-  //          'cp': resolve('/components'),
-  //       }
-  //     }
-  //   }
+  ],
 };

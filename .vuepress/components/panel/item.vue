@@ -3,13 +3,21 @@
     <div class="panel-image">
       <img src="https://picsum.photos/375/375/?gravity=north" alt="blog">
     </div>
-    <div class="panel-content"></div>
+    <div class="panel-content">
+      {{description}}
+    </div>
   </article>
 </template>
 
 <script>
 export default {
-  name: "panel"
+  name: "panel",
+  props:{
+    description:{
+      type:String,
+      default:''
+    }
+  }
 };
 </script>
 

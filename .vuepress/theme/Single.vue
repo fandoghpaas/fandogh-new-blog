@@ -1,14 +1,23 @@
 <template>
-    <div>
-        <div class="backlink">
-            <a href="/">← Home</a>
-        </div>
-        <div class="content">
-            <h1>{{ $page.frontmatter.title }}</h1>
-            <Content />
-        </div>
+  <div>
+    <div class="content">
+      <h1>{{ $page.frontmatter.title }}</h1>
+      <Content/>
+      <!-- <Content /> -->
     </div>
+  </div>
 </template>
 <script>
-export default {};
+import MContent from "../components/MContent.vue";
+
+export default {
+  components: {
+    MContent
+  },
+  computed: {
+    data() {
+      return this.$page.frontmatter;
+    }
+  }
+};
 </script>

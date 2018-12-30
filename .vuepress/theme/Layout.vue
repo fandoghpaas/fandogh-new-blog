@@ -49,4 +49,5 @@ export default {
 body 
   direction rtl
   font-family IRANYekan
+  
 </style>

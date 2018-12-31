@@ -18,6 +18,13 @@ module.exports = {
           "https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
       }
     ],
+    // [
+    //   "link",
+    //   {
+    //     rel: "stylesheet",
+    //     href: "./components/styles/style.styl"
+    //   }
+    // ],
     [
       "link",
       {
@@ -26,5 +33,5 @@ module.exports = {
           "https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.css"
       }
     ]
-  ],
+  ]
 };

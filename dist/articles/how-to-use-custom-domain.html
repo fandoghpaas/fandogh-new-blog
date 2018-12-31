@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>چطور از دامنه شخصی خود برای سرویس فندق استفاده کنیم؟ | پلتفرم فندق</title>
+    <meta name="description" content="وبلاگ سرویس ابری فندق">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.css">
+    
+    <link rel="preload" href="/assets/css/0.styles.b86373bd.css" as="style"><link rel="preload" href="/assets/js/app.4aa76659.js" as="script"><link rel="preload" href="/assets/js/6.a5fd2ec5.js" as="script"><link rel="prefetch" href="/assets/js/10.f79b84e8.js"><link rel="prefetch" href="/assets/js/11.062c72a3.js"><link rel="prefetch" href="/assets/js/12.8a44ab67.js"><link rel="prefetch" href="/assets/js/13.020af0a4.js"><link rel="prefetch" href="/assets/js/2.c2d6521a.js"><link rel="prefetch" href="/assets/js/3.2f1ddc34.js"><link rel="prefetch" href="/assets/js/4.561416d4.js"><link rel="prefetch" href="/assets/js/5.a82b7514.js"><link rel="prefetch" href="/assets/js/7.e4966f3c.js"><link rel="prefetch" href="/assets/js/8.07380e6a.js"><link rel="prefetch" href="/assets/js/9.31a25750.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.b86373bd.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div><header data-v-34c5605c><a href="/" data-v-34c5605c><img src="/assets/img/fandogh-logo.cef32c95.png" alt="fandogh-logo" data-v-34c5605c></a></header> <section class="section"><!----> <div><div class="content"><h1></h1> <div class="content custom"><h1 id="چطور-از-دامنه-شخصی-خود-برای-سرویس-فندق-استفاده-کنیم؟"><a href="#چطور-از-دامنه-شخصی-خود-برای-سرویس-فندق-استفاده-کنیم؟" aria-hidden="true" class="header-anchor">#</a> چطور از دامنه شخصی خود برای سرویس فندق استفاده کنیم؟</h1> <p>مواردی وجود دارد که کاربران نیاز دارند تا برای سرویس های خود روی فندق از دامنه دلخواهی مثل
+<code>api.my-domain.com</code>
+استفاده کنند.این کار به سادگی توسط fandogh-CLI امکان پذیر است، ابتدا باید دامنه را ثبت و مالکیت خود را اثبات کنید سپس می‌توانید سرویس را روی دامنه مورد نظر deploy کنید.</p> <h2 id="ثبت-دامنه-جدید-در-فندق"><a href="#ثبت-دامنه-جدید-در-فندق" aria-hidden="true" class="header-anchor">#</a> ثبت دامنه جدید در فندق</h2> <p>ابتدا در CLI ‌لاگین کنید سپس دستور زیر را اجرا کنید:</p> <div class="language- extra-class"><pre class="language-text"><code>$ fandogh domain add --name api.my-domain.com
+</code></pre></div><p>با اجرای این دستور دامنه مورد نظر در اکانت شما  ثبت می‌شود و یک Key ‌نمایش داده می‌شود. برای اینکه مالکیت خود را روی دامنه اثبات کنید لازم است یک TXT رکورد روی دامنه  <code>api.my-domain.com</code> ایجاد کنید و مقدار Key ای که از CLI دریافت کردید را در آنجا قرار دهید.
+اگر TXT record ‌به درستی تنظیم شده باشد دامنه شما تایید می‌شود و به اکانت فندق شما اضافه می‌شود.</p> <h2 id="deploy-سرویس-روی-دامنه-مورد-نظر"><a href="#deploy-سرویس-روی-دامنه-مورد-نظر" aria-hidden="true" class="header-anchor">#</a> deploy سرویس روی دامنه مورد نظر</h2> <p>deploy سرویس روی دامنه مورد نظر مثل deploy هر سرویس دیگری است تنها کافیست از سوئیچ <code>host—-</code> استفاده کنید:</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh service deploy --hosts api.my-domain.com
+
+</code></pre></div><p>به این ترتیب اگر دامنه به درستی ثبت و تایید شده باشد سرویس شما deploy می‌شود و روی آدرس مورد نظر قابل دسترس است.</p> <h2 id="تنظیم-کردن-cname"><a href="#تنظیم-کردن-cname" aria-hidden="true" class="header-anchor">#</a> تنظیم کردن CNAME</h2> <p>توجه داشته باشید که باید روی DNS Server دامنه مورد نظر یک CNAME  به آدرس فندق سرویس خود ایجاد کنید.
+مثلا اگر نام سرویس شما some-api  است و نام namespace شما my-company است آدرس فندق سرویس شما
+<code>some-api-my-company.fandogh.cloud</code> خواهد بود و به یک رکورد CNAME در <code>api.my-domain.com</code> ‌نیاز دارید که به آدرس فندقی اشاره کند.</p></div></div></div></section></div></div>
+    <script src="/assets/js/app.4aa76659.js" defer></script><script src="/assets/js/6.a5fd2ec5.js" defer></script>
+  </body>
+</html>

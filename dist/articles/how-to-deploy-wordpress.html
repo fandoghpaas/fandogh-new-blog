@@ -1,76 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>deploy کردن وردپرس با فندق | پلتفرم فندق</title>
-    <meta name="description" content="وبلاگ سرویس ابری فندق">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.css">
-    
-    <link rel="preload" href="/assets/css/0.styles.b86373bd.css" as="style"><link rel="preload" href="/assets/js/app.4aa76659.js" as="script"><link rel="preload" href="/assets/js/5.a82b7514.js" as="script"><link rel="prefetch" href="/assets/js/10.f79b84e8.js"><link rel="prefetch" href="/assets/js/11.062c72a3.js"><link rel="prefetch" href="/assets/js/12.8a44ab67.js"><link rel="prefetch" href="/assets/js/13.020af0a4.js"><link rel="prefetch" href="/assets/js/2.c2d6521a.js"><link rel="prefetch" href="/assets/js/3.2f1ddc34.js"><link rel="prefetch" href="/assets/js/4.561416d4.js"><link rel="prefetch" href="/assets/js/6.a5fd2ec5.js"><link rel="prefetch" href="/assets/js/7.e4966f3c.js"><link rel="prefetch" href="/assets/js/8.07380e6a.js"><link rel="prefetch" href="/assets/js/9.31a25750.js">
-    <link rel="stylesheet" href="/assets/css/0.styles.b86373bd.css">
-  </head>
-  <body>
-    <div id="app" data-server-rendered="true"><div><header data-v-34c5605c><a href="/" data-v-34c5605c><img src="/assets/img/fandogh-logo.cef32c95.png" alt="fandogh-logo" data-v-34c5605c></a></header> <section class="section"><!----> <div><div class="content"><h1></h1> <div class="content custom"><h2 id="deploy-کردن-وردپرس-با-فندق"><a href="#deploy-کردن-وردپرس-با-فندق" aria-hidden="true" class="header-anchor">#</a> deploy کردن وردپرس با فندق</h2> <p>وردپرس یک سیستم مدیریت محتوای بسیار پرطرفدار است که می‌توانید به سادگی روی پلتفرم فندق deploy و استفاده کنید. در این مطلب قصد داریم با هم مراحل deploy کردن وردپرس روی فندق را مرور کنیم.</p> <h3 id="خلاصه-مراحل"><a href="#خلاصه-مراحل" aria-hidden="true" class="header-anchor">#</a> خلاصه مراحل</h3> <ol><li>یک حساب کاربری در فندق ساخته و فندق cli ‌را نصب کنید</li> <li>یک سرویس MySQL ‌از طریق دستور managed-service ‌ایجاد کنید.</li> <li>یک داکر فایل برای وردپرس نوشته و روی فندق publish کنید.</li> <li>با set کردن صحیح environment variables وردپرس را deploy کنید.</li></ol> <div class="tip custom-block"><p class="custom-block-title">نکته</p> <p>اگر حوصله خواندن ندارید می‌توانید
-<a href="https://github.com/fandoghpaas/fandogh-examples/tree/master/wordpress-mysql" target="_blank" rel="noopener noreferrer">از این ریپو<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>
-استفاده کنید 😄</p></div> <h3 id="قدم-اول-ساخت-اکانت-فندق-و-نصب-cli"><a href="#قدم-اول-ساخت-اکانت-فندق-و-نصب-cli" aria-hidden="true" class="header-anchor">#</a> قدم اول: ساخت اکانت فندق و نصب CLI</h3> <p>کافیه یک سر به آدرس <a href="http://fandogh.cloud/" target="_blank" rel="noopener noreferrer">فندق<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> بزنید و روی دکمه ثبت‌نام کلیک کنید، فکر نمی‌کنم بیشتر از ۱ دقیقه طول بکشه.
-شما برای ارسال دستوراتتون به فندق، به کلاینت فندق یا همون <a href="https://github.com/fandoghpaas/fandogh-cli" target="_blank" rel="noopener noreferrer">Fandogh CLI<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> هم نیاز دارید که از طریق همین لینک می‌توانید به راحتی نصبش کنید، یا به <a href="http://blog.fandogh.cloud/articles/fandogh-introduction.html" target="_blank" rel="noopener noreferrer">معرفی فندق<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> مراجعه کنید.</p> <h3 id="قدم-دوم-ساخت-سرویس-mysql"><a href="#قدم-دوم-ساخت-سرویس-mysql" aria-hidden="true" class="header-anchor">#</a> قدم دوم: ساخت سرویس MySQL</h3> <p>ما در فندق یک قابلیتی ارائه میدیم به نام managed-service  که کمک می‌کنه سرویس‌های رایج را ساده‌تر deploy کنید.
-مراحل کار به این شکل هستش:</p> <p>قبل از هر چیز لازمه که لاگین کنیم</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh login
-</code></pre></div><p>deploy کردن یک managed-service  فقط یک دستور لازم داره، به شرطی که اسم و ورژن سرویسی که میخواید deploy کنید را بدانید، مثلا برای deploy MySQL ورژن 9.4 دستور زیر کفایت می‌کنه:</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh managed-service deploy mysql 9.4
-</code></pre></div><p>وقتی دستور را اجرا می‌کنید باید چنین خروجی مشاهده کنید:</p> <div class="language- extra-class"><pre class="language-text"><code>Your Mysql service will be ready in a few seconds.
-You can have access to the PHPMyAdmin via following link:
-http://mysql.[YOURNAMESPACE].fandogh.cloud
-
-</code></pre></div><p>اگر پیغام بالا را مشاهده کردید یعنی سرویس MySQL شما با موفقیت راه‌اندازی شده.</p> <p>اما حالا که داریم با managed-service کار می‌کنیم بذارید راجع به چند تا از ویژگی‌های قابل اعمال هم صحبت کنیم.
-همون طور که
-<a href="https://github.com/fandoghpaas/fandogh-cli#configuration" target="_blank" rel="noopener noreferrer">اینجا مستند شده<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>
-شما برای deploy کردن MySQL یه سری گزینه قابل تنظیم دارید:</p> <ul><li><p>service_name
-همون طور که توی مستندات فندق هست، همه سرویس‌هایی که داخل یک namespace در حال اجرا هستند یک DNS داخلی دارند و سرویس‌های مختلف از طریق service_name می‌توانند همدیگر را پیدا کنند و به هم متصل بشوند.
-وقتی یک managed-service برای MySQL ایجاد می‌کنید اسم پیش‌فرضش mysql هستش، یعنی سرویس‌های دیگه باید توی شبکه دنبال نام mysql بگردند تا به آن وصل شوند، از طریق این گزینه می‌توانید اسم دیگه‌ای به آن نسبت بدید.</p></li> <li><p>phpmyadmin_enabled
-از طریق این گزینه می‌توانید PHPMyAdmin را فعال یا غیر فعال کنید</p></li> <li><p>mysql_root_password
-این هم از اسمش پیداست، میشه از طریقش پسورد روت MySQL را مشخص کرد</p></li></ul> <p>برای اینکه یک سری از امکانات دیگه فندق را هم ببینیم  توی این ‌آموزش ما قصد نداریم از PHPMyAdmin استفاده کنیم، پس اجازه بدید به این شکل سرویس MySQL را ایجاد کنیم:</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh managed-service deploy mysql 9.4 -c service_name=my-database -c phpmyadmin_enabled=false -c mysql_root_password=somepassword
-
-</code></pre></div><h3 id="قدم-سوم-نوشتن-dockerfile-و-publish-کردن-وردپرس"><a href="#قدم-سوم-نوشتن-dockerfile-و-publish-کردن-وردپرس" aria-hidden="true" class="header-anchor">#</a> قدم سوم: نوشتن Dockerfile و publish کردن وردپرس</h3> <p>برای اینکار یک Directory بسازید روی سیستم خودتون، مثلا اسمش را می‌‌گذاریم my-wp-blog  و وارد اون Directory بشید.
-یک فایل به نام <code>Dockerfile</code> بسازید و تنها چیزی که لازمه داخلش بنویسید همینه:</p> <div class="language- extra-class"><pre class="language-text"><code>FROM wordpress
-
-```با اینکار ما یک Image کاملا مشابه با Image اصلی وردپرس ساختیم و از همون استفاده می‌کنیم، توضیحات مربوط به image اصلی وردپرس رو می‌توانید [اینجا](https://hub.docker.com/_/wordpress/) مشاهده کنید
-حالا در حالی که داخل اون Directory هستید باید فقط یک فایل داشته باشید به نام Dockerfile  با محتویاتی که بالاتر اشاره کردم، الان کافیه که اول image هاتون را روی فندق init کنید و بعد هم ورژن بزنید و publish کنید:
-
-</code></pre></div><p>fandogh image init</p> <div class="language- extra-class"><pre class="language-text"><code>که از شما یک اسم می‌خواد،
-</code></pre></div><p>fandogh image publish</p> <div class="language- extra-class"><pre class="language-text"><code>که از شما ورژن می‌خواد
-اگر همه چیز خوب پیش بره باید وقتی لیست ورژن‌ها را میگیرید این ورژن وضعیتش `BUILT` باشه:
-</code></pre></div><p>fandogh image versions</p> <div class="language- extra-class"><pre class="language-text"><code>
-
-### قدم چهارم و آخر: deploy کردن وردپرس روی فندق
-
-برای deploy کردن imageای که توی قدم قبلی ساختیم باید از کامند `service deploy‍` فندق استفاده کنیم، اما باید به وردپرس بگیم که کجا باید دنبال دیتابیس بگرده 
-طبق داکرفایلی که نوشتیم تو قدم قبلی image ما براساس 
-[ایمیج رسمی وردپرس](https://hub.docker.com/_/wordpress/)
- ساخته شده و ایمیج رسمی وردپرس یه سری environment variable دریافت می‌کنه.پارامتر‌هایی که برای ما مهم هستند، پارامتر‌های مربوط به دیتابیس هستند( البته لیست کاملش توی همین لینکی که گذاشتم هست)‌:
-* WORDPRESS_DB_HOST
-* WORDPRESS_DB_USER
-* WORDPRESS_DB_PASSWORD
-* WORDPRESS_DB_NAME
-
-ما می‌تونیم موقع deploy سرویس این پارامتر‌ها را هم از طریق `-e` ست کنیم بنابر این کامندی که اجرا می‌کنیم میشه این:
-
-</code></pre></div><p>fandogh service deploy -e WORDPRESS_DB_HOST=my-database -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_PASSWORD=somepassword -e WORDPRESS_DB_NAME=wp</p> <div class="language- extra-class"><pre class="language-text"><code>مقدار هر کدوم از این متغیر‌ها را از روی مقادیری که موقع ساخت سرویس MySQL مشخص کردیم باید بردارید.      
-بعد از اجرا از شما در مورد اینکه کدوم ورژن را مایلید deploy کنید می‌پرسه و اینکه اسم سرویستون چیه و اگر همه چیز خوب پیش بره خروجی مورد نظر این باید باشه:
-
-</code></pre></div><p>The image version: v1
-Your service name: mywp
-Your service deployed successfully.
-The service is accessible via following link:
-http://[YOUR-SERVICE-NAME].[YOUR-NAMESPACE].fandogh.cloud</p> <div class="language- extra-class"><pre class="language-text"><code>اگر به آدرس بالا مراجعه کنید با صفحه نصب wordpress مواجه میشید و این یعنی سرویس وردپرس شما آماده است.
-
-
-ممنون که همراه ما هستید، هر سوال یا مشکلی در مورد استفاده از فندق داشتید حتما توی قسمت 
-[ایشو‌های گیت‌هاب ](https://github.com/fandoghpaas/fandogh-cli/issues)
-با ما به اشتراک بگذارید، خوشحال میشیم نظرات و انتقادات شما را بشنویم.
-
-
-</code></pre></div></div></div></div></section></div></div>
-    <script src="/assets/js/app.4aa76659.js" defer></script><script src="/assets/js/5.a82b7514.js" defer></script>
-  </body>
-</html>

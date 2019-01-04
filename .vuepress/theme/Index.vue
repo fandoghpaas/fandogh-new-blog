@@ -10,11 +10,21 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <b-item :description="lastPost.title"/>
+          <b-item
+            :title="lastPost.frontmatter.title"
+            :description="lastPost.frontmatter.description"
+            :image="lastPost.frontmatter.thumbnail"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <header class="home-header">
+            <h2 class="home-title">سایر بلاگ پست‌ها</h2>
+          </header>
         </div>
       </div>
     </div>
-
     <!-- <div class="content">
       <h1>{{ $page.frontmatter.title }}</h1>
       <Content/>
@@ -25,14 +35,17 @@
         <p>{{ post.frontmatter.excerpt }}</p>
         <a :href="post.path">Read More </a>
       </article>
-    </div> -->
+    </div>-->
+    <b-footer/>
   </div>
 </template>
 <script>
 import BItem from "../components/panel/item";
+import BFooter from "../components/footer";
 export default {
   components: {
-    BItem
+    BItem,
+    BFooter
   },
   computed: {
     posts() {
@@ -56,7 +69,6 @@ export default {
 
 <style lang="stylus" scoped>
 .home
-  display flex
   &-header
     position relative
     width 100%

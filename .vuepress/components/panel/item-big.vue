@@ -5,14 +5,14 @@
     </div>
     <div class="panel-content">
       <h2 class="panel-title">{{title}}</h2>
-      <p class="panel-description">{{description}}</p>
+      <p class="panel-description">{{description , 200 | elipsText}}</p>
     </div>
   </article>
 </template>
 
 <script>
 export default {
-  name: "panel",
+  name: "panel-big",
   props: {
     description: {
       type: String,
@@ -26,6 +26,12 @@ export default {
       type: String,
       default: ""
     }
+  },
+  filters: {
+    elipsText(text, count) {
+      if (!text) return "";
+      return text.slice(0, count) + (text.length > count ? "..." : "");
+    }
   }
 };
 </script>
@@ -34,19 +40,22 @@ export default {
 .panel
   display flex
   margin-bottom 45px
-  padding 45px
+  padding 2.8125em
+  height 29.0625em
   border-radius 10px
   background-color #ffffff
   box-shadow 0 3px 22px 0 rgba(0, 0, 0, 0.16)
+  font-size 16px
   &-image
     position relative
     position relative
     display block
     overflow hidden
     margin 0
-    margin-left 45px
+    margin-left 2.8125em
     padding-top 20%
     min-width 375px
+    border-radius 10px
     span
       position absolute
       top 0
@@ -60,13 +69,13 @@ export default {
     text-align right
     letter-spacing normal
     font-weight bold
-    font-size 30px
+    font-size 1.875em
     font-family IRANYekan
     line-height 1.7
   &-description
     color #4f4f4f
     text-align justify
-    font-size 26px
+    font-size 1.625em
     font-family IRANYekan
     line-height 1.73
 </style>

@@ -1,3 +1,10 @@
+---
+title: 'Namespace and Storage'
+description: 'در این پست با مفاهیم Namespace و Storage بر روی فندق بیشتر آشنا خواهید شد'
+thumbnail: '/articles/shared_storage.png'
+link: '/articles/namespace-storage.html'
+date: '۱۳ مرداد ۱۳۹۷'
+---
 
 
 # Namespace و Storage Model  

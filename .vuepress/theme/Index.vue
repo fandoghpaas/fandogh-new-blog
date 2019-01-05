@@ -1,16 +1,16 @@
 <template>
-  <div class="home">
+  <div class="blog-home">
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
-          <header class="home-header">
-            <h1 class="home-title">جدیدترین بلاگ پست</h1>
+          <header class="blog-home-header">
+            <h1 class="blog-home-title">جدیدترین بلاگ پست</h1>
           </header>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <b-item
+          <b-item-big
             :title="lastPost.frontmatter.title"
             :description="lastPost.frontmatter.description"
             :image="lastPost.frontmatter.thumbnail"
@@ -19,12 +19,23 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <header class="home-header">
-            <h2 class="home-title">سایر بلاگ پست‌ها</h2>
+          <header class="blog-home-header">
+            <h2 class="blog-home-title">سایر بلاگ پست‌ها</h2>
           </header>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-4" v-for="(post,i) in posts">
+          <b-item-small
+            :link="post.frontmatter.link"
+            :title="post.frontmatter.title"
+            :description="post.frontmatter.description"
+            :image="post.frontmatter.thumbnail"
+          />
+        </div>
+      </div>
     </div>
+
     <!-- <div class="content">
       <h1>{{ $page.frontmatter.title }}</h1>
       <Content/>
@@ -40,11 +51,13 @@
   </div>
 </template>
 <script>
-import BItem from "../components/panel/item";
+import BItemBig from "../components/panel/item-big";
+import BItemSmall from "../components/panel/item-small";
 import BFooter from "../components/footer";
 export default {
   components: {
-    BItem,
+    BItemBig,
+    BItemSmall,
     BFooter
   },
   computed: {
@@ -57,7 +70,8 @@ export default {
         .sort(
           (a, b) =>
             Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date)
-        );
+        )
+        .slice(1, 4);
     },
     lastPost() {
       return this.posts[0];
@@ -68,7 +82,10 @@ export default {
 
 
 <style lang="stylus" scoped>
-.home
+.blog-home
+  .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-offset-0, .col-sm-offset-1, .col-sm-offset-2, .col-sm-offset-3, .col-sm-offset-4, .col-sm-offset-5, .col-sm-offset-6, .col-sm-offset-7, .col-sm-offset-8, .col-sm-offset-9, .col-sm-offset-10, .col-sm-offset-11, .col-sm-offset-12
+    padding-right 20px
+    padding-left 20px
   &-header
     position relative
     width 100%

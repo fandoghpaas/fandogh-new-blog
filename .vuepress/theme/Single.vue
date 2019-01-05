@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="single-content">
     <div class="content">
       <h1>{{ $page.frontmatter.title }}</h1>
       <Content/>
@@ -7,10 +7,9 @@
   </div>
 </template>
 <script>
-
 export default {
-  components: {
-  },
+  name: "single",
+  components: {},
   computed: {
     data() {
       return this.$page.frontmatter;
@@ -21,7 +20,7 @@ export default {
 
 
 
-<style lang="stylus">
+<style lang="stylus" >
 @import '../components/styles/config.styl'
 @import '../components/styles/style.styl'
 

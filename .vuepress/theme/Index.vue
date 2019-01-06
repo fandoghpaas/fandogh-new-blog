@@ -34,6 +34,19 @@
           />
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <vue-paginate-al
+            :totalPage="Math.ceil(allData.length / 3)"
+            :myData="posts"
+            @btnClick="goToFuncWithData"
+            activeBGColor="success"
+            :withNextPrev="true"
+            nextText="Go Forward"
+            prevText="Go back"
+          />
+        </div>
+      </div>
     </div>
 
     <!-- <div class="content">
@@ -54,14 +67,29 @@
 import BItemBig from "../components/panel/item-big";
 import BItemSmall from "../components/panel/item-small";
 import BFooter from "../components/footer";
+import VuePaginateAl from "vue-paginate-al";
 export default {
   components: {
     BItemBig,
     BItemSmall,
-    BFooter
+    BFooter,
+    VuePaginateAl
+  },
+  data() {
+    return {
+      startItem: 0,
+      lastItem: 3
+    };
+  },
+  methods: {
+    goToFuncWithData: function(n, data) {
+      let d = n - 1;
+      this.startItem = d * 3;
+      this.lastItem = (d + 1) * 3;
+    }
   },
   computed: {
-    posts() {
+    allData() {
       return this.$site.pages
         .filter(
           page =>
@@ -70,11 +98,23 @@ export default {
         .sort(
           (a, b) =>
             Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date)
-        )
-        .slice(1, 4);
+        );
+    },
+    posts() {
+      let arr = [...this.allData];
+      arr.shift();
+      return arr.slice(this.startItem, this.lastItem);
     },
     lastPost() {
-      return this.posts[0];
+      return this.$site.pages
+        .filter(
+          page =>
+            page.path.endsWith(".html") && page.path.startsWith(this.$page.path)
+        )
+        .sort(
+          (a, b) =>
+            Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date)
+        )[0];
     }
   }
 };

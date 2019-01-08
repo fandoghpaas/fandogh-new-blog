@@ -1,89 +1,134 @@
 <template>
-  <div></div>
+  <div>
+    <nav class="pagination">
+      <a v-on:click="prev()" class="button">Previous</a>
+      <a v-on:click="next()" class="button">Next page</a>
+      <ul>
+        <li v-for="p in pageCount">
+          <a v-if="pageNo == p" v-on:click="page(p)" class="button is-primary">{{p}}</a>
+          <a v-else v-on:click="page(p)" class="button">{{p}}</a>
+        </li>
+      </ul>
+    </nav>
+
+    <button v-on:click="first()" class="button">First</button>
+    <button v-on:click="prev()" class="button">Prev</button>
+    <span style="padding-top:1em;">{{pageNo}}/{{pageCount}}</span>
+    <button v-on:click="next()" class="button">Next</button>
+    <button v-on:click="last()" class="button">Last</button>
+  </div>
 </template>
+
 
 <script>
 export default {
+  name: "",
   data() {
     return {
-      current_page: 1,
-      records_per_page: 3,
-
-      objJson: [
-        { adName: "AdName 1" },
-        { adName: "AdName 2" },
-        { adName: "AdName 3" },
-        { adName: "AdName 4" },
-        { adName: "AdName 5" },
-        { adName: "AdName 6" },
-        { adName: "AdName 7" },
-        { adName: "AdName 8" },
-        { adName: "AdName 9" },
-        { adName: "AdName 10" }
-      ]
+      users: [],
+      pageNo: 1,
+      pageSize: 5,
+      pageCount: 5
     };
   },
   methods: {
-    // Can be obtained from another source, such as your objJson variable
-
-    prevPage() {
-      if (current_page > 1) {
-        current_page--;
-        changePage(current_page);
+    init: function() {
+      this.virtualService({
+        pageNo: this.pageNo,
+        pageSize: this.pageSize
+      });
+    },
+    page: function(pageNo) {
+      this.virtualService({
+        pageNo: pageNo,
+        pageSize: this.pageSize
+      });
+    },
+    first: function() {
+      this.pageNo = 1;
+      this.virtualService({
+        pageNo: this.pageNo,
+        pageSize: this.pageSize
+      });
+    },
+    last: function() {
+      this.pageNo = this.pageCount;
+      this.virtualService({
+        pageNo: this.pageNo,
+        pageSize: this.pageSize
+      });
+    },
+    prev: function() {
+      if (this.pageNo > 1) {
+        this.pageNo -= 1;
+        this.virtualService({
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        });
       }
     },
-
-    nextPage() {
-      if (current_page < numPages()) {
-        current_page++;
-        changePage(current_page);
+    next: function() {
+      if (this.pageNo < this.pageCount) {
+        this.pageNo += 1;
+        this.virtualService({
+          pageNo: this.pageNo,
+          pageSize: this.pageSize
+        });
       }
     },
-
-    changePage(page) {
-      var btn_next = document.getElementById("btn_next");
-      var btn_prev = document.getElementById("btn_prev");
-      var listing_table = document.getElementById("listingTable");
-      var page_span = document.getElementById("page");
-
-      // Validate page
-      if (page < 1) page = 1;
-      if (page > numPages()) page = numPages();
-
-      listing_table.innerHTML = "";
-
-      for (
-        var i = (page - 1) * records_per_page;
-        i < page * records_per_page && i < objJson.length;
-        i++
-      ) {
-        listing_table.innerHTML += objJson[i].adName + "<br>";
+    virtualDataFromDb: function() {
+      var users = [];
+      for (var i = 1; i <= 105; i++) {
+        var user = {
+          id: "US" + i,
+          firstName: i + "USER",
+          lastName: "RESU" + i
+        };
+        users.push(user);
       }
-      page_span.innerHTML = page + "/" + numPages();
-
-      if (page == 1) {
-        btn_prev.style.visibility = "hidden";
-      } else {
-        btn_prev.style.visibility = "visible";
-      }
-
-      if (page == numPages()) {
-        btn_next.style.visibility = "hidden";
-      } else {
-        btn_next.style.visibility = "visible";
-      }
+      return users;
     },
-    numPages() {
-      return Math.ceil(objJson.length / records_per_page);
+    count: function(condition) {
+      return this.virtualDataFromDb().length;
+    },
+    queryFromVirtualDB: function(condition, startRow, endRow) {
+      var result = [];
+      var condition = {};
+      var data = this.virtualDataFromDb();
+      var count = this.count(condition);
+      for (var i = startRow - 1; i < endRow; i++) {
+        if (i < count) {
+          result.push(data[i]);
+        }
+      }
+      return result;
+    },
+    virtualService: function(params) {
+      var result = [];
+      var condition = {};
+      var pageNo = params.pageNo;
+      var pageSize = params.pageSize;
+      var pageCount = Math.ceil(this.count(condition) / pageSize);
+
+      if (pageNo == 0) pageNo = 1;
+      if (pageNo < 0) pageNo = pageCount;
+      else if (pageNo > pageCount) pageNo = pageCount;
+      var startRow = (pageNo - 1) * pageSize + 1;
+      var endRow = startRow + pageSize - 1;
+      var data = this.queryFromVirtualDB(condition, startRow, endRow);
+
+      // set result
+      this.users = data;
+      this.pageNo = pageNo;
+      this.pageCount = pageCount;
     }
-
-    // window.onload =
-    // ,() {
-    //     changePage(1);
-    // };
+  },
+  created: function() {
+    // this.init();
+  },
+  // ready
+  mounted: function() {
+    this.init();
   }
 };
 </script>
-
-<style scoped>
-</style>

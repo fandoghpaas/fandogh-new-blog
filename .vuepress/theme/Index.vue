@@ -36,15 +36,17 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <vue-paginate-al
-            :totalPage="Math.ceil(allData.length / 3)"
-            :myData="posts"
-            @btnClick="goToFuncWithData"
-            activeBGColor="success"
-            :withNextPrev="true"
-            nextText="Go Forward"
-            prevText="Go back"
-          />
+          <div class="paginate-wrapper">
+            <vue-paginate-al
+              :totalPage="Math.ceil(allData.length / 3)"
+              :myData="posts"
+              @btnClick="goToFuncWithData"
+              activeBGColor="success"
+              :withNextPrev="true"
+              nextText="بعدی"
+              prevText="قبلی"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -150,4 +152,8 @@ export default {
     text-align right
     font-weight bold
     font-size 36px
+  .paginate-wrapper
+    text-align center
+.pagination > li > a, .pagination > li > span
+  border none
 </style>

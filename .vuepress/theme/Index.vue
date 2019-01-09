@@ -14,6 +14,7 @@
             :title="lastPost.frontmatter.title"
             :description="lastPost.frontmatter.description"
             :image="lastPost.frontmatter.thumbnail"
+            :date="lastPost.frontmatter.date"
           />
         </div>
       </div>
@@ -31,51 +32,36 @@
             :title="post.frontmatter.title"
             :description="post.frontmatter.description"
             :image="post.frontmatter.thumbnail"
+            :date="post.frontmatter.date"
           />
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
           <div class="paginate-wrapper">
-            <vue-paginate-al
-              :totalPage="Math.ceil(allData.length / 3)"
-              :myData="posts"
-              @btnClick="goToFuncWithData"
-              activeBGColor="success"
-              :withNextPrev="true"
-              nextText="بعدی"
-              prevText="قبلی"
-            />
+            <paginate
+              :pageCount="Math.ceil(allData.length / 3)"
+              :clickHandler="goToFuncWithData"
+              :prevText="'قبلی'"
+              :nextText="'بعدی'"
+              :containerClass="'paginate-doc'"
+            ></paginate>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <div class="content">
-      <h1>{{ $page.frontmatter.title }}</h1>
-      <Content/>
-    </div>
-    <div class="articles">
-      <article class="post section" v-for="post in posts">
-        <h2 class="subtitle is-4">{{ post.title }}</h2>
-        <p>{{ post.frontmatter.excerpt }}</p>
-        <a :href="post.path">Read More </a>
-      </article>
-    </div>-->
-    <b-footer/>
   </div>
 </template>
 <script>
 import BItemBig from "../components/panel/item-big";
 import BItemSmall from "../components/panel/item-small";
-import BFooter from "../components/footer";
-import VuePaginateAl from "vue-paginate-al";
+import Paginate from 'vuejs-paginate'
 export default {
   components: {
     BItemBig,
     BItemSmall,
-    BFooter,
-    VuePaginateAl
+    Paginate
+
   },
   data() {
     return {
@@ -84,7 +70,7 @@ export default {
     };
   },
   methods: {
-    goToFuncWithData: function(n, data) {
+    goToFuncWithData: function (n, data) {
       let d = n - 1;
       this.startItem = d * 3;
       this.lastItem = (d + 1) * 3;
@@ -123,13 +109,14 @@ export default {
 </script>
 
 
-<style lang="stylus" scoped>
+<style lang="stylus" >
 .blog-home
   .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-offset-0, .col-sm-offset-1, .col-sm-offset-2, .col-sm-offset-3, .col-sm-offset-4, .col-sm-offset-5, .col-sm-offset-6, .col-sm-offset-7, .col-sm-offset-8, .col-sm-offset-9, .col-sm-offset-10, .col-sm-offset-11, .col-sm-offset-12
     padding-right 20px
     padding-left 20px
   &-header
     position relative
+    margin 45px 0
     width 100%
     &:before
       position absolute
@@ -152,8 +139,53 @@ export default {
     text-align right
     font-weight bold
     font-size 36px
-  .paginate-wrapper
-    text-align center
-.pagination > li > a, .pagination > li > span
-  border none
+.paginate-wrapper
+  display flex
+  justify-content center
+  .paginate-doc
+    display flex
+    flex-direction row-reverse
+    justify-content center
+    margin 0
+    list-style none
+    list-style-type none
+    li
+      margin-left 15px
+      a
+        display flex
+        justify-content center
+        align-items center
+        width 48px
+        height @width
+        border-radius 50%
+        color #4f4f4f
+        font-size 26px
+        font-family IRANNurm
+        transition all 0.3s ease-in
+        &:focus
+          outline none
+        &:hover
+          background-color #24caee
+          color #fff
+      &.disabled
+        a
+          color #bfbfbf
+      &.active
+        a
+          background-color #24caee
+          color #fff
+      &:first-child
+        margin-right 45px
+      &:last-child
+        margin-left 45px
+      &:last-child, &:first-child
+        &.disabled
+          a
+            &:hover
+              background-color #fff
+              color #bfbfbf
+        a
+          &:hover
+            background-color #fff
+            color #4f4f4f
 </style>

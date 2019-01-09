@@ -6,6 +6,7 @@
     <div class="panel-small-content">
       <h2 class="panel-small-title">{{title}}</h2>
       <p class="panel-small-description">{{description, 100 | elipsText}}</p>
+      <span class="panel-small-date">{{date}}</span>
     </div>
   </router-link>
 </template>
@@ -29,6 +30,10 @@ export default {
     image: {
       type: String,
       default: ""
+    },
+    date: {
+      type: String,
+      default: ""
     }
   },
   filters: {
@@ -41,7 +46,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+$space = 2.8125em
 .panel-small
+  position relative
   display flex
   flex-direction column
   margin-bottom 45px
@@ -80,7 +87,7 @@ export default {
     text-align justify
     letter-spacing normal
     font-weight bold
-    font-size 1.5em
+    font-size 1.2em
     font-family IRANYekan
     line-height 1.7
   &-description
@@ -89,5 +96,11 @@ export default {
     font-size 1.25em
     font-family IRANYekan
     line-height 1.73
+  &-date
+    position absolute
+    bottom $space
+    left $space
+    color #75879c
+    font-size 16px
 </style>
 

@@ -6,6 +6,7 @@
     <div class="panel-content">
       <h2 class="panel-title">{{title}}</h2>
       <p class="panel-description">{{description , 200 | elipsText}}</p>
+      <span class="panel-date">{{date}}</span>
     </div>
   </article>
 </template>
@@ -25,6 +26,10 @@ export default {
     image: {
       type: String,
       default: ""
+    },
+    date: {
+      type: String,
+      default: ""
     }
   },
   filters: {
@@ -37,23 +42,23 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+$space = 2.8125em
 .panel
+  // height 29.0625em
+  position relative
   display flex
-  margin-bottom 45px
   padding 2.8125em
-  height 29.0625em
   border-radius 10px
   background-color #ffffff
   box-shadow 0 3px 22px 0 rgba(0, 0, 0, 0.16)
   font-size 16px
   &-image
     position relative
-    position relative
     display block
     overflow hidden
     margin 0
     margin-left 2.8125em
-    padding-top 20%
+    padding-top 34%
     min-width 375px
     border-radius 10px
     span
@@ -78,5 +83,11 @@ export default {
     font-size 1.625em
     font-family IRANYekan
     line-height 1.73
+  &-date
+    position absolute
+    bottom $space
+    left $space
+    color #75879c
+    font-size 20px
 </style>
 

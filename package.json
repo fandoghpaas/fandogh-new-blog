@@ -18,6 +18,6 @@
     "markdown-it-katex": "^2.0.3",
     "normalize.css": "^8.0.1",
     "vue-analytics": "^5.12.2",
-    "vue-paginate-al": "^1.1.6"
+    "vuejs-paginate": "^2.1.0"
   }
 }

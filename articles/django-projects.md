@@ -4,6 +4,7 @@ description: "توی این آموزش قدم به قدم یک پروژه جنگ
 thumbnail: "/articles/django.png"
 link: "/articles/django-projects.html"
 date: "۲ مرداد ۱۳۹۷"
+order: 5
 ---
 
 برای دیپلوی کردن پروژه جنگو یا هر پروژه دیگه‌ای روی فندق لازمه که پروژه داکرایز بشه، یعنی این قابلیت رو داشته باشه که روی یک Docker container به درستی اجرا بشه.

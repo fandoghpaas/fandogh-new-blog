@@ -40,13 +40,12 @@
       <div class="row">
         <div class="col-sm-12 col-xs-12">
           <div class="paginate-wrapper">
-            <!-- <paginate
-              :pageCount="Math.ceil(allData.length / 3)"
+            <!-- <paginate></paginate> -->
+            <!-- :pageCount="Math.ceil(allData.length / 3)"
               :clickHandler="goToFuncWithData"
               :prevText="'قبلی'"
               :nextText="'بعدی'"
-              :containerClass="'paginate-doc'"
-            ></paginate>-->
+            :containerClass="'paginate-doc'"-->
           </div>
         </div>
       </div>
@@ -56,12 +55,12 @@
 <script>
 import BItemBig from "../components/panel/item-big";
 import BItemSmall from "../components/panel/item-small";
-// import Paginate from 'vuejs-paginate'
+import Paginate from 'vue-paginate'
 export default {
   components: {
     BItemBig,
     BItemSmall,
-    // Paginate
+    Paginate
 
   },
   data() {
@@ -79,15 +78,8 @@ export default {
   },
   computed: {
     allData() {
-      return this.$site.pages
-        .filter(
-          page =>
-            page.path.endsWith(".html") && page.path.startsWith(this.$page.path)
-        )
-        .sort(
-          (a, b) =>
-            Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date)
-        );
+      return this.$site.pages.filter(page => page.path.endsWith(".html") && page.path.startsWith(this.$page.path))
+        .sort((a, b) => b.frontmatter.order - a.frontmatter.order).reverse();
     },
     posts() {
       let arr = [...this.allData];
@@ -96,14 +88,8 @@ export default {
     },
     lastPost() {
       return this.$site.pages
-        .filter(
-          page =>
-            page.path.endsWith(".html") && page.path.startsWith(this.$page.path)
-        )
-        .sort(
-          (a, b) =>
-            Date.parse(b.frontmatter.date) - Date.parse(a.frontmatter.date)
-        )[0];
+        .filter(page => page.path.endsWith(".html") && page.path.startsWith(this.$page.path))
+        .sort((a, b) => b.frontmatter.order - a.frontmatter.order).reverse()[0];
     }
   }
 };

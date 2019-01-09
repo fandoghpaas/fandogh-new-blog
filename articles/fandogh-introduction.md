@@ -4,6 +4,7 @@ description: "در واقع فندق سکویی است که سعی در حل ک�
 thumbnail: "/articles/fandogh.svg"
 link: "/articles/fandogh-introduction.html"
 date: "۲ خرداد ۱۳۹۷"
+order: 8
 ---
 
 فندق سکویی است که سعی در حل کردن چالش های مختلفی دارد که در زمان استقرار محصول تیم های توسعه و نگهداری نرم افزار با آن برخورد میکنند.

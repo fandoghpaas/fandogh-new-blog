@@ -4,6 +4,7 @@ description: "توی این آموزش خیلی سریع یک سرویس را ب
 thumbnail: "/articles/custom-domain.jpg"
 link: "/articles/how-to-use-custom-domain.html"
 date: "۱ مرداد ۱۳۹۷"
+order: 6
 ---
 
 مواردی وجود دارد که کاربران نیاز دارند تا برای سرویس های خود روی فندق از دامنه دلخواهی مثل

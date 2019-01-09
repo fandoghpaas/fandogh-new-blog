@@ -4,6 +4,7 @@ description: "توی این آموزش با هم توی کمتر از ۵ دقی�
 thumbnail: "/articles/Wordpress-MySQL-logo.png"
 link: "/articles/how-to-deploy-wordpress.html"
 date: "۱۲ تیر ۱۳۹۷"
+order: 7
 ---
 
 وردپرس یک سیستم مدیریت محتوای بسیار پرطرفدار است که می‌توانید به سادگی روی پلتفرم فندق deploy و استفاده کنید. در این مطلب قصد داریم با هم مراحل deploy کردن وردپرس روی فندق را مرور کنیم.

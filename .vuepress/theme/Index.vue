@@ -40,6 +40,8 @@
       <div class="row">
         <div class="col-sm-12 col-xs-12">
           <div class="paginate-wrapper">
+            <!-- :pageNumber="10" -->
+            <b-pagination/>
             <!-- <paginate></paginate> -->
             <!-- :pageCount="Math.ceil(allData.length / 3)"
               :clickHandler="goToFuncWithData"
@@ -55,12 +57,12 @@
 <script>
 import BItemBig from "../components/panel/item-big";
 import BItemSmall from "../components/panel/item-small";
-import Paginate from 'vue-paginate'
+import BPagination from '../components/pagination'
 export default {
   components: {
     BItemBig,
     BItemSmall,
-    Paginate
+    BPagination
 
   },
   data() {

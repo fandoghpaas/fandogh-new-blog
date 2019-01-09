@@ -29,4 +29,6 @@ header
   background-position center
   background-size 50%
   animation slide 20s linear infinite
+  @media screen and (max-width: 992px)
+    padding 25px 30px 25px 0
 </style>

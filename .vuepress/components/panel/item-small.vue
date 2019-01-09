@@ -47,26 +47,32 @@ export default {
 
 <style lang="stylus" scoped>
 $space = 2.8125em
+$spaceSm = 1.5em
 .panel-small
   position relative
   display flex
   flex-direction column
   margin-bottom 45px
   padding 2.8125em
-  height 34.375em
+  width 100%
+  height 39.375em
   border-radius 10px
   background-color #ffffff
   box-shadow 0 3px 22px 0 rgba(0, 0, 0, 0.16)
   text-decoration none
   font-size 16px
   transition all 0.3s ease-in
-  @media only screen and (max-width: 1300px)
-    font-size 12px
+  @media screen and (max-width: 1200px)
+    height 45em
+    font-size 14px
+  @media screen and (max-width: 992px)
+    font-size 10px
+  @media screen and (max-width: 768px)
+    height auto
   &:hover
     background-color #e7e8ea
     box-shadow 0 3px 22px 0 rgba(0, 0, 0, 0.16)
   &-image
-    position relative
     position relative
     display block
     overflow hidden
@@ -96,6 +102,8 @@ $space = 2.8125em
     font-size 1.25em
     font-family IRANYekan
     line-height 1.73
+    @media screen and (max-width: 768px)
+      margin-bottom 10em
   &-date
     position absolute
     bottom $space

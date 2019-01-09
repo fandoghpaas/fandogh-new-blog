@@ -42,6 +42,9 @@ export default {
 @font-face
   font-family IRANNurm
   src url('../components/styles/fonts/YekanBakh_Regular.ttf')
+*
+  box-sizing border-box
+  -webkit-box-sizing border-box
 body
   font-family IRANYekan
   direction rtl

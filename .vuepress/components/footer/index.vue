@@ -49,6 +49,8 @@ export default {
   background-size 50%
   box-shadow 0 -3px 6px 0 rgba(0, 0, 0, 0.16)
   animation slide 20s linear infinite
+  @media screen and (max-width: 768px)
+    height auto
 @keyframes slide
   from
     background-position 0 0
@@ -63,6 +65,8 @@ export default {
   display flex
   justify-content center
   padding-top 45px
+  @media screen and (max-width: 768px)
+    flex-direction column
   a
     text-decoration none
 .footer-site .footer-site-top-link
@@ -78,11 +82,17 @@ export default {
   line-height 46px
   cursor pointer
   transition all 0.4s ease
+  @media screen and (max-width: 768px)
+    align-self center
+    align-items center
+    margin-bottom 10px
+    margin-left 0
 .footer-site .footer-site-top-link:hover
   box-shadow 0 3px 26px 0 rgba(255, 255, 255, 0.75)
 .footer-site .footer-site-top-social
   display flex
   justify-content center
+  margin-bottom 25px
   padding-top 45px
 .footer-site .footer-site-top-social-item
   margin-left 45px
@@ -99,10 +109,14 @@ export default {
   height 45px
   background-color #2a1975
   line-height 45px
+  @media screen and (max-width: 768px)
+    height auto
 .footer-site-down p, .footer-site-down a
   margin 0
   color #fff
   text-align center
   text-decoration none
   line-height 45px
+  @media screen and (max-width: 768px)
+    font-size 14px
 </style>

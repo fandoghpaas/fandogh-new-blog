@@ -1,5 +1,5 @@
 <template>
-  <article class="panel">
+  <router-link :to="link" class="panel">
     <div class="panel-image">
       <span :style="{ backgroundImage: `url(${$withBase(image)})` }"></span>
     </div>
@@ -8,13 +8,17 @@
       <p class="panel-description">{{description , 200 | elipsText}}</p>
       <span class="panel-date">{{date}}</span>
     </div>
-  </article>
+  </router-link>
 </template>
 
 <script>
 export default {
   name: "panel-big",
   props: {
+    link: {
+      type: String,
+      default: ""
+    },
     description: {
       type: String,
       default: ""
@@ -43,15 +47,24 @@ export default {
 
 <style lang="stylus" scoped>
 $space = 2.8125em
+$spaceSm = 1.5em
 .panel
   // height 29.0625em
   position relative
   display flex
-  padding 2.8125em
+  padding $space
   border-radius 10px
   background-color #ffffff
   box-shadow 0 3px 22px 0 rgba(0, 0, 0, 0.16)
+  text-decoration none
   font-size 16px
+  @media screen and (max-width: 1200px)
+    font-size 12px
+  @media screen and (max-width: 992px)
+    flex-direction column
+    padding $spaceSm
+    width 100%
+    font-size 10px
   &-image
     position relative
     display block
@@ -61,6 +74,9 @@ $space = 2.8125em
     padding-top 34%
     min-width 375px
     border-radius 10px
+    @media screen and (max-width: 992px)
+      margin-left 0
+      min-width inherit
     span
       position absolute
       top 0
@@ -83,11 +99,16 @@ $space = 2.8125em
     font-size 1.625em
     font-family IRANYekan
     line-height 1.73
+    @media screen and (max-width: 992px)
+      margin-bottom 4em
   &-date
     position absolute
     bottom $space
     left $space
     color #75879c
-    font-size 20px
+    font-size 1.2em
+    @media screen and (max-width: 992px)
+      bottom $spaceSm
+      left $spaceSm
 </style>
 

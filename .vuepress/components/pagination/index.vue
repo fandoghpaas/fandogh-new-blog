@@ -15,6 +15,7 @@
 
 <script>
 // https://stackoverflow.com/questions/35596389/vuejs-how-to-make-pagination-with-limiter-and-range/35706926#35706926
+// https://jsfiddle.net/taha_sh/hmapx482/
 export default {
   //   props: ['pageNumber'],
   data() {

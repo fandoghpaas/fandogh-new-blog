@@ -1,13 +1,13 @@
 <template>
   <ul class="paginate-doc">
-    <li @click.prevent="handelEvent(active + 1)">
-      <a href>بعدی</a>
+    <li @click.prevent="handelEventArrow(active,'perv')" :class="{disabled:prevDisabled}">
+      <a href>قبلی</a>
     </li>
     <li v-for="(item,index) in pageCount" :class="{active:active === index}">
       <a @click.prevent="handelEvent(index+1)">{{index+1}}</a>
     </li>
-    <li @click.prevent="handelEvent(active - 1)">
-      <a href>قبلی</a>
+    <li @click.prevent="handelEventArrow(active,'next')" :class="{disabled:nexDisabled}">
+      <a href>بعدی</a>
     </li>
   </ul>
 </template>
@@ -24,17 +24,36 @@ export default {
   },
   data() {
     return {
-      active: 1
+      active: 0
+    };
+  },
+  computed: {
+    nexDisabled() {
+      return this.active + 1 === this.pageCount;
+    },
+    prevDisabled() {
+      return this.active === 0;
     }
   },
   methods: {
-    handelEvent(p) {
-      this.$emit('clickHandler', p)
-      this.active = p - 1
+    handelEventArrow(active, arrow) {
+      if (arrow === "next") {
+        this.handelEvent(active + 1, true);
+      } else {
+        this.handelEvent(active - 1, true);
+      }
     },
+    handelEvent(p, activate) {
+      if (!activate) {
+        this.$emit("clickHandler", p);
+        this.active = p - 1;
+      } else {
+        this.$emit("clickHandler", p + 1);
+        this.active = p;
+      }
+    }
   }
-
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -75,6 +94,7 @@ export default {
         background-color #24caee
         color #fff
     &.disabled
+      pointer-events none
       a
         color #bfbfbf
     &.active

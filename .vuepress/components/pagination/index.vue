@@ -1,14 +1,13 @@
 <template>
-  <ul>
-    <li
-      v-for="pageNumber in totalPages"
-      v-if="Math.abs(pageNumber - currentPage) < 3 || pageNumber == totalPages - 1 || pageNumber == 0"
-    >
-      <a
-        href="#"
-        @click="setPage(pageNumber)"
-        :class="{current: currentPage === pageNumber, last: (pageNumber == totalPages - 1 && Math.abs(pageNumber - currentPage) > 3), first:(pageNumber == 0 && Math.abs(pageNumber - currentPage) > 3)}"
-      >{{ pageNumber+1 }}</a>
+  <ul class="paginate-doc">
+    <li @click.prevent="handelEvent(active + 1)">
+      <a href>بعدی</a>
+    </li>
+    <li v-for="(item,index) in pageCount" :class="{active:active === index}">
+      <a @click.prevent="handelEvent(index+1)">{{index+1}}</a>
+    </li>
+    <li @click.prevent="handelEvent(active - 1)">
+      <a href>قبلی</a>
     </li>
   </ul>
 </template>
@@ -17,36 +16,83 @@
 // https://stackoverflow.com/questions/35596389/vuejs-how-to-make-pagination-with-limiter-and-range/35706926#35706926
 // https://jsfiddle.net/taha_sh/hmapx482/
 export default {
-  //   props: ['pageNumber'],
-  data() {
-    return {
-      currentPage: 0,
-      itemsPerPage: 1,
-      resultCount: 0
+  props: {
+    pageCount: {
+      type: Number,
+      default: 0
     }
   },
-  computed: {
-    totalPages: function () {
-      return Math.ceil(this.resultCount / this.itemsPerPage)
+  data() {
+    return {
+      active: 1
     }
   },
   methods: {
-    setPage: function (pageNumber) {
-      this.currentPage = pageNumber
-    }
-  },
-  filters: {
-    paginate: function (list) {
-      this.resultCount = 20
-      if (this.currentPage >= this.totalPages) {
-        this.currentPage = this.totalPages - 1
-      }
-      var index = this.currentPage * this.itemsPerPage
-      return list.slice(index, index + this.itemsPerPage)
-    }
+    handelEvent(p) {
+      this.$emit('clickHandler', p)
+      this.active = p - 1
+    },
   }
+
 }
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
+.paginate-doc
+  display flex
+  justify-content center
+  margin 0
+  width 100%
+  list-style none
+  list-style-type none
+  margin-block-start 0
+  margin-block-end 0
+  margin-inline-start 0px
+  margin-inline-end 0px
+  padding-inline-start 0
+  li
+    margin-left 15px
+    @media screen and (max-width: 768px)
+      display none
+      &:last-child, &:first-child, &.active
+        display flex
+    a
+      display flex
+      justify-content center
+      align-items center
+      width 48px
+      height @width
+      border-radius 50%
+      color #4f4f4f
+      text-decoration none
+      font-size 26px
+      font-family IRANNurm
+      cursor pointer
+      transition all 0.3s ease-in
+      &:focus
+        outline none
+      &:hover
+        background-color #24caee
+        color #fff
+    &.disabled
+      a
+        color #bfbfbf
+    &.active
+      a
+        background-color #24caee
+        color #fff
+    &:first-child
+      margin-left 45px
+    &:last-child
+      margin-right 45px
+    &:last-child, &:first-child
+      &.disabled
+        a
+          &:hover
+            background-color #fff
+            color #bfbfbf
+      a
+        &:hover
+          background-color #fff
+          color #4f4f4f
 </style>

@@ -41,7 +41,10 @@
         <div class="col-sm-12 col-xs-12">
           <div class="paginate-wrapper">
             <!-- :pageNumber="10" -->
-            <b-pagination/>
+            <b-pagination
+              :pageCount="Math.ceil(allData.length / 3)"
+              @clickHandler="goToFuncWithData"
+            />
             <!-- <paginate></paginate> -->
             <!-- :pageCount="Math.ceil(allData.length / 3)"
               :clickHandler="goToFuncWithData"
@@ -141,59 +144,4 @@ export default {
   display flex
   justify-content center
   text-align center
-  .paginate-doc
-    display flex
-    justify-content center
-    margin 0
-    width 100%
-    list-style none
-    list-style-type none
-    margin-block-start 0
-    margin-block-end 0
-    margin-inline-start 0px
-    margin-inline-end 0px
-    padding-inline-start 0
-    li
-      margin-left 15px
-      @media screen and (max-width: 768px)
-        display none
-        &:last-child, &:first-child, &.active
-          display flex
-      a
-        display flex
-        justify-content center
-        align-items center
-        width 48px
-        height @width
-        border-radius 50%
-        color #4f4f4f
-        font-size 26px
-        font-family IRANNurm
-        transition all 0.3s ease-in
-        &:focus
-          outline none
-        &:hover
-          background-color #24caee
-          color #fff
-      &.disabled
-        a
-          color #bfbfbf
-      &.active
-        a
-          background-color #24caee
-          color #fff
-      &:first-child
-        margin-left 45px
-      &:last-child
-        margin-right 45px
-      &:last-child, &:first-child
-        &.disabled
-          a
-            &:hover
-              background-color #fff
-              color #bfbfbf
-        a
-          &:hover
-            background-color #fff
-            color #4f4f4f
 </style>

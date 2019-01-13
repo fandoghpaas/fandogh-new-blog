@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>چگونه پروژه جنگو را روی فندق دیپلوی کنیم؟ | پلتفرم فندق</title>
+    <meta name="description" content="توی این آموزش قدم به قدم یک پروژه جنگو رو داکرایز می‌کنیم و روی فندق اجرا می‌کنیم">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.css">
+    
+    <link rel="preload" href="/assets/css/0.styles.8997c913.css" as="style"><link rel="preload" href="/assets/js/app.6de40759.js" as="script"><link rel="preload" href="/assets/js/3.5053ca2a.js" as="script"><link rel="prefetch" href="/assets/js/10.8fac845b.js"><link rel="prefetch" href="/assets/js/11.e6216841.js"><link rel="prefetch" href="/assets/js/12.ee7f5827.js"><link rel="prefetch" href="/assets/js/13.38ba5573.js"><link rel="prefetch" href="/assets/js/2.1181ea01.js"><link rel="prefetch" href="/assets/js/4.18e3a5dd.js"><link rel="prefetch" href="/assets/js/5.121b18d2.js"><link rel="prefetch" href="/assets/js/6.9fe2d0d3.js"><link rel="prefetch" href="/assets/js/7.809bf0db.js"><link rel="prefetch" href="/assets/js/8.2d3a00fe.js"><link rel="prefetch" href="/assets/js/9.2bc7bf5b.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.8997c913.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div><header data-v-770c82b2><a href="/" data-v-770c82b2><img src="/assets/img/fandogh-logo.cef32c95.png" alt="fandogh-logo" data-v-770c82b2></a></header> <section class="section"><!----> <div class="single-content"><div class="content"><h1>چگونه پروژه جنگو را روی فندق دیپلوی کنیم؟</h1> <div class="content custom"><p>برای دیپلوی کردن پروژه جنگو یا هر پروژه دیگه‌ای روی فندق لازمه که پروژه داکرایز بشه، یعنی این قابلیت رو داشته باشه که روی یک Docker container به درستی اجرا بشه.
+شاید یکم پیچیده به نظر برسه اما اگر این آموزش رو قدم به قدم پیش برید به سادگی می‌تونید اینکار رو انجام بدید.
+وقتی پروژه جنگو رو میخواید در قالب یک Container اجرا کنید باید اولا چند تا تغییر کوچک روی پروژه بدید و دوما یک Dockerfile برای پروژه بنویسید،‌ که هر کدوم رو توضیح میدم:</p> <h2 id="تغییرات-پروژه"><a href="#تغییرات-پروژه" aria-hidden="true" class="header-anchor">#</a> تغییرات پروژه</h2> <p>چند تا تغییر توی کد پروژه باید مد نظر قرار بدید که با هم بررسی می‌کنیم:</p> <h3 id="دیتابیس"><a href="#دیتابیس" aria-hidden="true" class="header-anchor">#</a> دیتابیس</h3> <p>پروژه‌های جنگو تقریبا همیشه یک دیتابیسی دارند، مهم نیست دیتابیس شما Sqlite باشه یا MySQL یا Postgresql یا هر چیز دیگه‌ای می‌تونید از فندق استفاده کنید اما در مورد هر دیتابیسی یه سری نکات هست باید حواستون باشه:</p> <h4 id="نکات-مربوط-به-دیتابیس-sqlite"><a href="#نکات-مربوط-به-دیتابیس-sqlite" aria-hidden="true" class="header-anchor">#</a> نکات مربوط به دیتابیس Sqlite</h4> <p>دیتابیس Sqlite برای ذخیره سازی اطلاعات از یک فایل استفاده می‌کنه و اگر جنگو کار کرده باشید می‌دونید که به طور پیش‌فرض اون فایل رو همونجا کنار فایل <code>manage.py‍‍‍</code> می‌سازه و این دقیقا یکی از مسائلی هستش که باید توی داکرایز کردن مورد توجه قرار بدید.
+فضایی که داخل container ها وجود داره مانا نیست، یعنی هر زمانی ممکنه container ریست بشه و اون فضا به طور کل خالی میشه و از نو ساخته میشه پس اگر دیتابیس یا فایل لاگ یا هر دیتای دیگه‌ای که زمان اجرا تولید میشه رو اونجا قرار بدید اطلاعاتتون رو ممکنه از دست بدید.
+یکی از امکاناتی که فندق در اختیار کاربرانش قرار میده یک فضای مانا هستش، فضایی که متعلق به کاربر هستش و می‌تونه با اطمینان داخلش بنویسه.
+این فضا توی آدرس <code>/mnt/shared-volume</code> قابل دسترس هستش، کافیه که به جنگو بگید فایل دیتابیس رو اونجا بسازه.
+برای اینکار کافیه توی <code>settings.py</code> به این شکل <code>DATABASE</code> رو تنظیم کنید:</p> <div class="language- extra-class"><pre class="language-text"><code>PERSISTENT_STORAGE = &quot;/mnt/shared-volume&quot;
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PERSISTENT_STORAGE, 'db.sqlite3'),
+    }
+}
+</code></pre></div><p>اول یک متغیر تعریف کردیم که حاوی آدرس <code>/mnt/shared-volume</code> هستش و بعد هم با به کمک <code>os.path.join‍‍</code> مشخص کردیم که محلی که جنگو برای ذخیره دیتابیس باید استفاده کنه باید <code>/mnt/shared-volume/db.sqlite3</code> باشه.</p> <h4 id="نکات-مربوط-به-دیتابیس-mysql"><a href="#نکات-مربوط-به-دیتابیس-mysql" aria-hidden="true" class="header-anchor">#</a> نکات مربوط به دیتابیس MySQL</h4> <p>برای دیتابیس MySQL به طور خاص می‌تونید از قابلیت managed-service استفاده کنید، این قابلیت یک دیتابیس MySQL برای شما ایجاد می‌کنه و با نام‌کاربری و رمزعبوری که انتخاب می‌کنید روی آدرس دلخواه شما در اختیار شما قرار میده.
+برای ساخت یک دیتابیس MySQL باید از fandogh_cli استفاده کنید و می‌تونید روش انجام اینکار رو <strong><a href="https://github.com/fandoghpaas/fandogh-cli#managed-services" target="_blank" rel="noopener noreferrer">اینجا<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></strong> مطالعه کنید.
+مثلا با چنین دستوری یک سرویس MySQL برای شما ساخته میشه:</p> <div class="language- extra-class"><pre class="language-text"><code> fandogh managed-service deploy mysql 9.4 \
+ -c service_name=my-database \
+ -c phpmyadmin_enabled=true \
+ -c mysql_root_password=test123
+</code></pre></div><p>توجه داشته باشید که اسم سرویسی که انتخاب کردید مهم هستش، اگر اسمی انتخاب نکنید به صورت پیشفرض نام سرویس mysql خواهد بود، مثلا من اینجا my-database رو به عنوان اسم سرویس انتخاب کردم اگر انتخاب نمی‌کردم همون mysql اسم سرویسم میشد.
+دقت کنید که باید اول از طریق PHPMyAdminای که برای شما ساخته میشه یک دیتابیس بسازید، کافیه روی لینکی که که از fandogh_cli گرفتید کلیک کنید با یوزرنیم root و پسوردی که انتخاب کردید وارد PHPMyAdmin بشید.
+حالا داخل PHPMyAdmin می‌تونید به سادگی دیتابیس رو بسازید، اگر یک نگاهی به منو ها بندازید کار سختی نیست راحت می‌تونید بسازید ولی اگر مشکلی خوردید <strong><a href="http://webvaultwiki.com.au/Default.aspx?Page=Create-Mysql-Database-User-Phpmyadmin&NS=&AspxAutoDetectCookieSupport=1" target="_blank" rel="noopener noreferrer">این آموزش<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></strong> رو دنبال کنید.
+حالا با داشتن username و password و database name میتونید به سادگی تنظیمات جنگو رو مشخص کنید تا از MySQL استفاده کنه:</p> <div class="language- extra-class"><pre class="language-text"><code>DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'my-project',
+        'USER': 'root',
+        'PASSWORD': 'test123',
+        'HOST': 'my-database',
+        'PORT': '3306',
+    }
+}
+</code></pre></div><p>دقت کنید که به جای HOST باید مقداری که به عنوان service_name موقع ساخت سرویس استفاده کردید رو بنویسید.</p> <h4 id="نکات-مربوط-به-دیتابیس‌های-دیگر"><a href="#نکات-مربوط-به-دیتابیس‌های-دیگر" aria-hidden="true" class="header-anchor">#</a> نکات مربوط به دیتابیس‌های دیگر</h4> <p>برای بقیه دیتابیس‌ها هم کار سختی نیست، کافیه که توی <a href="https://hub.docker.com/explore/" target="_blank" rel="noopener noreferrer">docker hub <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> سرچ کنید داکرفایلشون رو پیدا کنید و <a href="http://blog.fandogh.cloud/articles/fandogh-introduction.html" target="_blank" rel="noopener noreferrer">سرویستون رو از روی داکرفایل اون‌ها بسازید.<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> البته اگر کمکی نیاز داشتید می‌دونید که ما همیشه آماده پاسخگویی به شما دوستان عزیز هستیم.</p> <h3 id="استفاده-از-environment-variables"><a href="#استفاده-از-environment-variables" aria-hidden="true" class="header-anchor">#</a> استفاده از Environment variables</h3> <p>نکاتی که تا الان گفتیم رو به همون شکلی که توضیح دادیم می‌تونید استفاده کنید، اما بهتر این هستش که یک سری مقادیر که تغییر می‌کنه اینطوری داخل کد نوشته نشه، مثلا HOSTای که برای MySQL استفاده می‌کنید یا USERNAME و PASSWORD بهتر هستش که از environment variables خونده بشه، ما هم توی این آموزش همین کار رو می‌کنیم، مثلا برای MySQL این تنظیمات رو استفاده می‌کنیم:</p> <div class="language- extra-class"><pre class="language-text"><code>DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get(&quot;MYSQL_DB_NAME&quot;),
+        'USER': os.environ.get(&quot;MYSQL_USERNAME&quot;),
+        'PASSWORD': os.environ.get(&quot;MYSQL_PASSWORD&quot;),
+        'HOST': os.environ.get(&quot;MYSQL_HOST_NAME&quot;),
+        'PORT': '3306',
+    }
+}
+</code></pre></div><p>به این ترتیب ما توی کد هیچ کدام از مقادیر متغیر رو قرار ندادیم و لازمه که موقع دیپلوی سرویس این مقادیر رو در اختیار app قرار بدیم، که جلوتر در موردش صحبت می‌کنیم.
+در مورد مقدار متغیر ‍‍<code>PERSISTENT_STORAGE</code> هم می‌تونیم همین کار رو بکنیم:</p> <div class="language- extra-class"><pre class="language-text"><code>PERSISTENT_STORAGE = os.environ.get(&quot;PERSISTENT_STORAGE&quot;)
+
+</code></pre></div><h2 id="نوشتن-داکرفایل"><a href="#نوشتن-داکرفایل" aria-hidden="true" class="header-anchor">#</a> نوشتن داکرفایل</h2> <p>در درجه اول توصیه می‌کنم حتما مستندات خود داکر رو در این مورد بخونید:
+https://docs.docker.com/engine/reference/builder/#usage
+برای توضیح داکر فایل اجازه بدید از یک مثال واقعی استفاده کنیم که می‌تونید کد مربوط بهش رو به طور کامل اینجا ملاحظه کنید:
+https://github.com/fandoghpaas/bestoon</p> <p>داکر فایل این پروژه جنگو به این شکل نوشته شده:</p> <div class="language- extra-class"><pre class="language-text"><code>FROM python:2
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /code
+WORKDIR /code
+ADD requirements.txt /code/
+RUN pip install -r requirements.txt
+ADD . /code/
+ENTRYPOINT [&quot;sh&quot;,&quot;/code/run_bestoon.sh&quot;]
+</code></pre></div><p>خط به خط با هم داکرفایل رو بررسی کنیم:
+خط <strong>FROM</strong> به معنی این هستش که این ایمیج باید بر اساس ایمیج پایتون ساخته شود، یعنی اگر فقط همین یک خط داخل داکر فایل باشد، یک کانتینر ساخته میشه که روش پایتون نصب هستش، اون عدد ۲ جلوی پایتون به معنی ورژن پایتون هستش، می‌تونید عدد ۳ بذارید برای پایتون ۳
+خط <strong>ENV</strong> برای ست کردن یک Environment variable استفاده میشه، توی این خط داریم مقدار PYTHONUNBUFFERED=1 رو داخل environment variableهای کانتینر ست می‌کنیم.
+خط <strong>RUN</strong> به معنی اجرا یک کامند لینوکسی هستش، که داخل کامند داریم با mkdir یک دایرکتوری داخل کانتینر درست می‌کنیم به نام code
+خط <strong>WORKDIR</strong> مثل cd در لینوکس عمل می‌کنه، و باعث میشه بقیه دستورات داخل دایرکتوری code اجرا بشند.
+خط <strong>ADD</strong> فایل requirements.txt رو از کنار داکرفایل برمیداره و داخل کانتینر کپی می‌کنه(داخل دایرکتوری /code)
+خط بعدی باز <strong>RUN</strong> هستش، و داریم با <code>pip install -r requirements.txt‍</code> نیازمندی‌های پروژه رو نصب می‌کنیم.
+خط بعدی کل دایرکتوری رو کپی می‌کنه داخل دایرکتوری /code توی کانتینر
+و خط آخر، خط آخر <strong>ENTRYPOINT</strong> داره میگه که موقعی که کانتینر ایجاد شد اولین کامندی که داخل اجرا میشه چه کامندی هستش، که همون طور که میبینید اجرای یک اسکریپت هستش.
+بذارید داخل اون اسکریپت رو هم ببینیم:</p> <div class="language- extra-class"><pre class="language-text"><code>#!/bin/bash
+python manage.py migrate
+python manage.py runserver 0.0.0.0:8000
+</code></pre></div><p>این اسکریپت اول migration ها رو اجرا می‌کنه و بعد هم پروژه جنگو رو روی پورت ۸۰۰۰ ران می‌کنه.
+اگر مثلا به collectstatic یا هر کامند دیگه‌ای هم نیاز باشه توی همین فایل اسکریپت می‌تونیم اضافه‌اش کنیم.</p> <p>حالا در نهایت برای اجرای این پروژه روی فندق اول باید لاگین کنیم <code>fandogh login</code> و بعد ایمیج بسازیم <code>fandogh image init</code> و در نهایت می‌تونیم این فایل‌ها رو به عنوان اولین ورژن از پروژه روی فندق منتشر کنیم <code>fandogh image publish</code> اگر همه چیز خوب پیش رفته باشه، باید ایمیج به درستی روی سرور فندق بیلد شده باشه:</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh image versions
+</code></pre></div><p>اگر وضعیت ایمیج BUILT بود یعنی تا اینجا همه چیز اوکیه!
+توی فایل settings.py این پروژه، دیتابیس به این شکل مشخص شده:</p> <div class="language- extra-class"><pre class="language-text"><code>DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME', 'bestoon'),
+        'USER': os.environ.get('DB_USERNAME', 'root'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'root'),
+        'HOST': os.environ.get('DB_HOST', 'mysql'),
+    }
+}
+</code></pre></div><p>پس موقع دیپلوی سرویس این متغیر ها رو باید پاس بدیم:</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh service deploy\
+-e DB_NAME=mydatabase \
+-e DB_USERNAME=root \
+-e DB_PASSWORD=somepassword \
+-e DB_HOST=my-database\
+-p 8000
+
+</code></pre></div><p>توجه داشته باشید که شما بایدآدرس سرویس خود بر روی سرور فندق را در فایل settings.py پروژه خود به متغیر ALLOWED_HOSTS اضافه کنید.</p> <p>فرمت این آدرس به صورت پیش فرض به شکل زیر است:</p> <div class="language- extra-class"><pre class="language-text"><code>{YOUR_SERVICE_NAME}-{YOUR_NAMESPACE}.fandogh.cloud
+</code></pre></div><p>همچنین توجه کنید که:</p> <ul><li>باید قبلا mysql server شما به این شکل دیپلوی شده باشه</li></ul> <div class="language- extra-class"><pre class="language-text"><code>fandogh managed-service deploy mysql 9.1 \
+-c service_name=my-database \
+-c mysql_root_password=somepassword \
+</code></pre></div><ul><li>از طریق PHPMyAdmin دیتابیس رو ساخته باشید!</li></ul> <p>کلیت داستان داکرایز کردن همین بود، هر گونه سوال یا کمک نیاز داشتید از طریق <a href="https://github.com/fandoghpaas/fandogh-cli/issues" target="_blank" rel="noopener noreferrer">ایشوهای گیتهاب<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> با ما تماس بگیرید.</p></div></div></div></section> <footer class="footer-site" data-v-2887d02a><div class="footer-site-top" data-v-2887d02a><div class="footer-site-links" data-v-2887d02a><a href="/" class="footer-site-top-link" data-v-2887d02a>صفحه اصلی</a> <a href="https://blog.fandogh.cloud" class="footer-site-top-link" data-v-2887d02a>بلاگ</a> <a href="https://github.com/fandoghpaas" class="footer-site-top-link" data-v-2887d02a>Contribute</a></div> <div class="footer-site-top-social" data-v-2887d02a><a class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/1.ddcd43be.svg" alt="Fandogh" data-v-2887d02a></a> <a href="https://github.com/fandoghpaas" class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/2.86396a7d.svg" alt="Fandogh" data-v-2887d02a></a> <a href="https://twitter.com/fandoghpaas?s=09" class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/3.c95aa774.svg" alt="Fandogh" data-v-2887d02a></a> <a href="support@fandogh.cloud" class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/4.f058352a.svg" alt="Fandogh" data-v-2887d02a></a></div></div> <div class="footer-site-down" data-v-2887d02a><p data-v-2887d02a>
+      کلیه حقوق این سایت متعلق به شرکت
+      <a href="https://inb-co.com/" data-v-2887d02a>ایده‌نگاران‌بینا</a> می‌باشد
+    </p></div></footer></div></div>
+    <script src="/assets/js/app.6de40759.js" defer></script><script src="/assets/js/3.5053ca2a.js" defer></script>
+  </body>
+</html>

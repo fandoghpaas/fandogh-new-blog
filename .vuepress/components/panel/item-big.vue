@@ -57,7 +57,7 @@ $spaceSm = 1.5em
   background-color #ffffff
   box-shadow 0 3px 22px 0 rgba(0, 0, 0, 0.16)
   text-decoration none
-  font-size 16px
+  font-size 14px
   @media screen and (max-width: 1200px)
     font-size 12px
   @media screen and (max-width: 992px)
@@ -71,8 +71,8 @@ $spaceSm = 1.5em
     overflow hidden
     margin 0
     margin-left 2.8125em
-    padding-top 34%
-    min-width 375px
+    padding-top 26%
+    min-width 265px
     border-radius 10px
     @media screen and (max-width: 992px)
       margin-left 0
@@ -90,13 +90,13 @@ $spaceSm = 1.5em
     text-align right
     letter-spacing normal
     font-weight bold
-    font-size 1.875em
+    font-size 1.6em
     font-family IRANYekan
     line-height 1.7
   &-description
     color #4f4f4f
     text-align justify
-    font-size 1.625em
+    font-size 1.4em
     font-family IRANYekan
     line-height 1.73
     @media screen and (max-width: 992px)

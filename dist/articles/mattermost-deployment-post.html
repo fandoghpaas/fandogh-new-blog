@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>استفاده از برنامه Mattermost به عنوان یک سرویس | پلتفرم فندق</title>
+    <meta name="description" content="برنامه Mattermost یک سرویس پیام‌رسان است که عمده استفاده از آن برای شرکت‌ها بوده و از محبوبیت بالایی برخوردار است. این برنامه این قابلیت را دارد که به صورت رایگان بر روی سرورهای شخصی مورد استفاده قرار گیرد٬به همین منظور برای آنکه کار برای شما راحت تر شود. در این بلاگ پست ما به شما نحوه پیاده‌سازی این سرویس بر روی فندق را آموزش خواهیم داد.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.css">
+    
+    <link rel="preload" href="/assets/css/0.styles.8997c913.css" as="style"><link rel="preload" href="/assets/js/app.6de40759.js" as="script"><link rel="preload" href="/assets/js/8.2d3a00fe.js" as="script"><link rel="prefetch" href="/assets/js/10.8fac845b.js"><link rel="prefetch" href="/assets/js/11.e6216841.js"><link rel="prefetch" href="/assets/js/12.ee7f5827.js"><link rel="prefetch" href="/assets/js/13.38ba5573.js"><link rel="prefetch" href="/assets/js/2.1181ea01.js"><link rel="prefetch" href="/assets/js/3.5053ca2a.js"><link rel="prefetch" href="/assets/js/4.18e3a5dd.js"><link rel="prefetch" href="/assets/js/5.121b18d2.js"><link rel="prefetch" href="/assets/js/6.9fe2d0d3.js"><link rel="prefetch" href="/assets/js/7.809bf0db.js"><link rel="prefetch" href="/assets/js/9.2bc7bf5b.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.8997c913.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div><header data-v-770c82b2><a href="/" data-v-770c82b2><img src="/assets/img/fandogh-logo.cef32c95.png" alt="fandogh-logo" data-v-770c82b2></a></header> <section class="section"><!----> <div class="single-content"><div class="content"><h1>استفاده از برنامه Mattermost به عنوان یک سرویس</h1> <div class="content custom"><p><img src="/articles/mattermost_messenger.png" alt="Mattermost" title="Mattermost"></p> <p>برنامه Mattermost یک سرویس پیام‌رسان است که عمده استفاده از آن برای شرکت‌ها بوده و از محبوبیت بالایی برخوردار است. این برنامه این قابلیت را دارد که به صورت رایگان بر روی سرورهای شخصی مورد استفاده قرار گیرد٬به همین منظور ما هم تصمیم گرفتیم یک پست براتون آماده کنیم و در مورد نحوه دیپلوی کردن این سرویس بر روی فندق توضیح مختصری بدیم.
+برای <strong>deploy</strong> کردن این سرویس کافی است به ترتیب زیر عمل کنید.
+<br><br></p> <p>۱- ابتدا با دستور زیر وارد حساب کاربری خود شوید.</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh login
+</code></pre></div> <br> <p>۲- سپس با استفاده از دستور زیر یک دیتابیس برای برنامه mattermost ایجاد نمایید.</p> <div class="language- extra-class"><pre class="language-text"><code>fandogh managed-service deploy postgresql 10.4 \
+ -c service_name=chat-db \
+ -c adminer_enabled=true \
+ -c postgres_password=postgres
+</code></pre></div><br> <p>۳- سپس از طریق لینکی که در اختیارتان قرار داده می‌شود وارد صفحه <strong>adminer</strong> شوید و دیتابیس مورد نیاز را بر روی PostgreSQL قرار دهید و نام کاربری که postgres می‌باشد و رمز عبور را که در دستور بالا به عنوان مقدار برای postgres_password انتخاب کرده‌اید قرار دهید.
+بعد از آنکه وارد شدید٬ یک دیتابیس با نام دلخواه ایجاد کنید٬ ما در اینجا برای مثال نام دیتابیس را mm در نظر گرفته‌ایم.
+<br></p> <p>۴- در انتها بعد از آنکه کار با دیتابیس RUN تمام شد٬ مشخصات زیر را کپی کرده و بر روی سیستم خود در یک فایل جدید با فرمت <strong>yml.</strong> ذخیره نمایید.
+<br></p> <blockquote><p>توجه داشته باشید که DB_HOST همان نام دیتابیس است که در قدم دوم انتخاب کرده‌اید.
+<br></p></blockquote> <div class="language- extra-class"><pre class="language-text"><code>kind: ExternalService
+name: chat
+spec:
+  image: mattermost/mattermost-prod-app:5.6.1
+  port: 8000
+  env:
+    - name: DB_HOST
+      value: chat-db
+    - name: DB_PORT
+      value: 5432
+    - name: MM_USERNAME
+      value: postgres
+    - name: MM_PASSWORD
+      value: postgres
+    - name: MM_DBNAME
+      value: mm
+  volume_mounts:
+    - mount_path: /mattermost/data
+      sub_path: chat/data
+      volume_name: chat-volume
+    - mount_path: /mattermost/logs
+      sub_path: chat/logs
+      volume_name: chat-volume
+    - mount_path: /mattermost/plugins
+      sub_path: chat/plugins
+      volume_name: chat-volume
+</code></pre></div> <br>
+&gt; توجه داشته باشید MM_PASSWORD در این فایل تنها برای آزمایش می‌باشد و باید یک password مناسب‌تری را انتخاب نمایید.
+<br>
+۴- سپس با استفاده از **cli** به آدرسی که فایل **yml.**  را در آنجا ذخیره کرده‌اید بروید و دستور زیر را اجرا نمایید.
+```
+fandogh service apply -f {path_to_yml_file}/your_file.yml
+```
+<br> <p>بعد از اینکه این دستور را اجرا کردید٬ سرور بقیه کارها را انجام می‌دهد و در کمتر از یک دقیقه برنامه شما بر روی URL که cli به شما می‌دهد قابل دسترسی می‌باشد و می‌توانید آن را با همکاران و دوستان خود به اشتراک بگذارید.</p> <blockquote><p>توجه داشته باشید در صورتی که از قابلیت <strong>سرویس رایگان</strong> استفاده می‌کنید٬باید خط‌های مربوط به volume_name را از مانیفست بالا حذف کنید در غیر این صورت با خطا مواجه خواهید شد.</p></blockquote> <blockquote><p>فایل های شما در حالت <strong>حساب رایگان</strong> بر روی <strong>Shared Storage</strong> مربوط به namesapce شما ذخیره می‌شود که این فضا محدود است و بین تمام سرویس های شما اشتراک گذاری شده است.</p></blockquote></div></div></div></section> <footer class="footer-site" data-v-2887d02a><div class="footer-site-top" data-v-2887d02a><div class="footer-site-links" data-v-2887d02a><a href="/" class="footer-site-top-link" data-v-2887d02a>صفحه اصلی</a> <a href="https://blog.fandogh.cloud" class="footer-site-top-link" data-v-2887d02a>بلاگ</a> <a href="https://github.com/fandoghpaas" class="footer-site-top-link" data-v-2887d02a>Contribute</a></div> <div class="footer-site-top-social" data-v-2887d02a><a class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/1.ddcd43be.svg" alt="Fandogh" data-v-2887d02a></a> <a href="https://github.com/fandoghpaas" class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/2.86396a7d.svg" alt="Fandogh" data-v-2887d02a></a> <a href="https://twitter.com/fandoghpaas?s=09" class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/3.c95aa774.svg" alt="Fandogh" data-v-2887d02a></a> <a href="support@fandogh.cloud" class="footer-site-top-social-item" data-v-2887d02a><img src="/assets/img/4.f058352a.svg" alt="Fandogh" data-v-2887d02a></a></div></div> <div class="footer-site-down" data-v-2887d02a><p data-v-2887d02a>
+      کلیه حقوق این سایت متعلق به شرکت
+      <a href="https://inb-co.com/" data-v-2887d02a>ایده‌نگاران‌بینا</a> می‌باشد
+    </p></div></footer></div></div>
+    <script src="/assets/js/app.6de40759.js" defer></script><script src="/assets/js/8.2d3a00fe.js" defer></script>
+  </body>
+</html>
